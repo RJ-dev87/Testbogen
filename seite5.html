@@ -1,0 +1,94 @@
+<!-- seite5.html (Seite 5) -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fragen Seite 5</title>
+  <style>
+    .frageblock { margin-bottom: 30px; }
+    .likert-container {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 10px;
+    }
+    .likert-container label {
+      font-size: 1em;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Letzter Teil der Umfrage</h1>
+
+  <h3>___________________ 1 = Stimme gar nicht zu ________________ 2 = Stimme eher nicht zu __________________ 3 = Neutral _____________________ 4 = Stimme eher zu ________________ 5 = Stimme völlig zu</h3>
+
+  <!-- Frage 13 -->
+  <div class="frageblock">
+    <p>Kritik an sexistischen Äußerungen ist grundsätzlich berechtigt.</p>
+    <div class="likert-container">
+      <label><input type="radio" name="frage13" value="1">1</label>
+      <label><input type="radio" name="frage13" value="2">2</label>
+      <label><input type="radio" name="frage13" value="3">3</label>
+      <label><input type="radio" name="frage13" value="4">4</label>
+      <label><input type="radio" name="frage13" value="5">5</label>
+    </div>
+  </div>
+
+  <!-- Frage 14 -->
+  <div class="frageblock">
+    <p>In Diskussionen über Sexismus ist es wichtig, Frauen erst einmal zuzuhören statt sich zu rechtfertigen.</p>
+    <div class="likert-container">
+      <label><input type="radio" name="frage14" value="1">1</label>
+      <label><input type="radio" name="frage14" value="2">2</label>
+      <label><input type="radio" name="frage14" value="3">3</label>
+      <label><input type="radio" name="frage14" value="4">4</label>
+      <label><input type="radio" name="frage14" value="5">5</label>
+    </div>
+  </div>
+
+  <!-- Frage 15 -->
+  <div class="frageblock">
+    <p>Die Gleichberechtigungsdebatte ist oft überzogen und benachteiligt Männer.</p>
+    <div class="likert-container">
+      <label><input type="radio" name="frage15" value="1">1</label>
+      <label><input type="radio" name="frage15" value="2">2</label>
+      <label><input type="radio" name="frage15" value="3">3</label>
+      <label><input type="radio" name="frage15" value="4">4</label>
+      <label><input type="radio" name="frage15" value="5">5</label>
+    </div>
+  </div>
+
+  <button onclick="zurAuswertung()">Auswertung anzeigen</button>
+
+<script>
+  function zurAuswertung() {
+    const fragen = document.querySelectorAll('.frageblock');
+    let antwortenSeite5 = {};
+
+    for (let i = 0; i < fragen.length; i++) {
+      const frageNummer = i + 13;
+      const name = `frage${frageNummer}`;
+      const checked = fragen[i].querySelector(`input[name="${name}"]:checked`);
+      if (!checked) {
+        alert(`Bitte beantworte Frage ${frageNummer}.`);
+        return;
+      }
+      antwortenSeite5[name] = parseInt(checked.value);
+    }
+
+    localStorage.setItem("antwortenSeite5", JSON.stringify(antwortenSeite5));
+
+    // Wechsle zur Auswertungsseite
+    window.location.href = "auswertung.html";
+  }
+</script>
+
+  
+</body>
+</html>
