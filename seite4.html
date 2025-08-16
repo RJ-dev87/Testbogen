@@ -1,0 +1,92 @@
+<!-- seite4.html (Seite 4) -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fragen Seite 4</title>
+  <style>
+    .frageblock { margin-bottom: 30px; }
+    .likert-container {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 10px;
+    }
+    .likert-container label {
+      font-size: 1em;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Teil 4 der Umfrage</h1>
+
+  <h3>___________________ 1 = Stimme gar nicht zu ________________ 2 = Stimme eher nicht zu __________________ 3 = Neutral _____________________ 4 = Stimme eher zu ________________ 5 = Stimme völlig zu</h3>
+
+  <!-- Frage 10 -->
+  <div class="frageblock">
+    <p>Frauen sollten die gleiche Freiheit haben wie Männer, wenn sie keine Kinder zu wollen.</p>
+    <div class="likert-container">
+      <label><input type="radio" name="frage10" value="1">1</label>
+      <label><input type="radio" name="frage10" value="2">2</label>
+      <label><input type="radio" name="frage10" value="3">3</label>
+      <label><input type="radio" name="frage10" value="4">4</label>
+      <label><input type="radio" name="frage10" value="5">5</label>
+    </div>
+  </div>
+
+  <!-- Frage 11 -->
+  <div class="frageblock">
+    <p>Frauen haben eine natürliche Begabung für Haushalt und Kinderbetreuung.</p>
+    <div class="likert-container">
+      <label><input type="radio" name="frage11" value="1">1</label>
+      <label><input type="radio" name="frage11" value="2">2</label>
+      <label><input type="radio" name="frage11" value="3">3</label>
+      <label><input type="radio" name="frage11" value="4">4</label>
+      <label><input type="radio" name="frage11" value="5">5</label>
+    </div>
+  </div>
+
+  <!-- Frage 12 -->
+  <div class="frageblock">
+    <p>Es ist abschreckend, wenn Frauen sehr selbstbewusst und dominant auftreten.</p>
+    <div class="likert-container">
+      <label><input type="radio" name="frage12" value="1">1</label>
+      <label><input type="radio" name="frage12" value="2">2</label>
+      <label><input type="radio" name="frage12" value="3">3</label>
+      <label><input type="radio" name="frage12" value="4">4</label>
+      <label><input type="radio" name="frage12" value="5">5</label>
+    </div>
+  </div>
+
+  <button onclick="weiterZurFuenftenSeite()">Weiter</button>
+
+  <script>
+    function weiterZurFuenftenSeite() {
+      const fragen = document.querySelectorAll('.frageblock');
+      let antworten = {};
+
+      for (let i = 0; i < fragen.length; i++) {
+        const name = `frage${i + 10}`; // Weil die Fragen hier ab 10 beginnen
+        const checked = fragen[i].querySelector(`input[name="${name}"]:checked`);
+        if (!checked) {
+          alert(`Bitte beantworte Frage ${i + 10}.`);
+          return;
+        }
+        antworten[name] = checked.value;
+      }
+
+      // Speichern der Antworten im localStorage
+      localStorage.setItem("antwortenSeite4", JSON.stringify(antworten));
+
+      // Zur fünften Seite wechseln
+      window.location.href = "seite5.html";
+    }
+  </script>
+</body>
+</html>
