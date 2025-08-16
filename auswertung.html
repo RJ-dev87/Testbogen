@@ -1,0 +1,83 @@
+<!-- auswertung.html -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Auswertung</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+    }
+    .ergebnis {
+      font-size: 1.5em;
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>Deine Auswertung</h1>
+  <div class="ergebnis" id="ausgabe"></div>
+
+    <script>
+  function berechneAuswertung() {
+    const seiten = ["antwortenSeite1", "antwortenSeite2", "antwortenSeite3", "antwortenSeite4", "antwortenSeite5"];
+    
+    const aFragen = [1, 5, 6, 7, 9, 11, 12, 15];
+    let gesamtPunkte = 0;
+
+    seiten.forEach(seite => {
+      const antworten = JSON.parse(localStorage.getItem(seite)) || {};
+      for (let frage in antworten) {
+        const frageNummer = parseInt(frage.replace("frage", ""));
+        const antwortWert = parseInt(antworten[frage]);
+
+        if (aFragen.includes(frageNummer)) {
+          // A-Fragen: Punkte wie ausgewählt
+          gesamtPunkte += antwortWert;
+        } else {
+          // B-Fragen: Invertierte Bewertung (Option 1 = 5 Punkte, Option 2 = 4, ...)
+          gesamtPunkte += 6 - antwortWert;
+        }
+      }
+    });
+
+    // Auswertung je nach Punktzahl
+    let kategorie = "";
+    if (gesamtPunkte >= 15 && gesamtPunkte <= 34) {
+      kategorie = "nicht misogyn";
+    } else if (gesamtPunkte >= 35 && gesamtPunkte <= 54) {
+      kategorie = "nicht frei von Misogynie";
+    } else if (gesamtPunkte >= 55 && gesamtPunkte <= 75) {
+      kategorie = "deutlich misogyn";
+    } else {
+      kategorie = "Ungültiger Punktestand";
+    }
+
+    document.getElementById("ausgabe").innerText =
+      `Du hast insgesamt ${gesamtPunkte} Punkte.\n\nDu bist: ${kategorie}`;
+  }
+
+  // direkt beim Laden ausführen
+  berechneAuswertung();
+</script>
+
+<br><br>
+<button onclick="zurStartseite()">Zurück zur Startseite</button>
+
+<script>
+  function zurStartseite() {
+    window.location.href = "index.html";
+  }
+</script>
+
+
+</body>
+</html>
+
