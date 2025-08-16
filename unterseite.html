@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Selbsttest</title>
+</head>
+<body>
+  <h1>Willkommen zum Selbstreflexionstest!</h1>
+  <p>Gut, dass du dir die Zeit nimmst: Wir können direkt loslegen.</p>
+
+<!-- index.html (Seite 1) -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fragen Seite 1</title>
+  <style>
+    .frageblock { margin-bottom: 30px; }
+    .likert-container {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 10px;
+    }
+    .likert-container label {
+      font-size: 1em;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gib bitte für die folgenden Fragen an, wie sehr du ihnen zustimmst:</h1>
+
+  <h3>___________________ 1 = Stimme gar nicht zu ________________ 2 = Stimme eher nicht zu __________________ 3 = Neutral _____________________ 4 = Stimme eher zu ________________ 5 = Stimme völlig zu</h3>
+  <!-- Frage 1 -->
+  <div class="frageblock">
+    <p>Frauen sind emotionaler und weniger rational als Männer.</p>
+    <div class="likert-container">
+      <label><input type="radio" name="frage1" value="1">1</label>
+      <label><input type="radio" name="frage1" value="2">2</label>
+      <label><input type="radio" name="frage1" value="3">3</label>
+      <label><input type="radio" name="frage1" value="4">4</label>
+      <label><input type="radio" name="frage1" value="5">5</label>
+    </div>
+  </div>
+
+  <!-- Frage 2 -->
+  <div class="frageblock">
+    <p>Frauen sind genauso kompetent in Führungs- und Technikberufen wie Männer.</p>
+    <div class="likert-container">
+      <label><input type="radio" name="frage2" value="1">1</label>
+      <label><input type="radio" name="frage2" value="2">2</label>
+      <label><input type="radio" name="frage2" value="3">3</label>
+      <label><input type="radio" name="frage2" value="4">4</label>
+      <label><input type="radio" name="frage2" value="5">5</label>
+    </div>
+  </div>
+
+  <!-- Frage 3 -->
+  <div class="frageblock">
+    <p>Die gesellschaftliche Benachteiligung von Frauen ist ein ernstes Problem.</p>
+    <div class="likert-container">
+      <label><input type="radio" name="frage3" value="1">1</label>
+      <label><input type="radio" name="frage3" value="2">2</label>
+      <label><input type="radio" name="frage3" value="3">3</label>
+      <label><input type="radio" name="frage3" value="4">4</label>
+      <label><input type="radio" name="frage3" value="5">5</label>
+    </div>
+  </div>
+
+  <button onclick="weiterZurZweitenSeite()">Weiter</button>
+
+  <script>
+    function weiterZurZweitenSeite() {
+      const fragen = document.querySelectorAll('.frageblock');
+      let antworten = {};
+
+      for (let i = 0; i < fragen.length; i++) {
+        const name = `frage${i + 1}`;
+        const checked = fragen[i].querySelector(`input[name="${name}"]:checked`);
+        if (!checked) {
+          alert(`Bitte beantworte Frage ${i + 1}.`);
+          return;
+        }
+        antworten[name] = checked.value;
+      }
+
+      // Speichern der Antworten im localStorage
+      localStorage.setItem("antwortenSeite1", JSON.stringify(antworten));
+
+      // Zur zweiten Seite wechseln
+      window.location.href = "seite2.html";
+    }
+  </script>
+</body>
+</html>
