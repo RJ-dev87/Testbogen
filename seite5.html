@@ -5,90 +5,156 @@
   <meta charset="UTF-8" />
   <title>Fragen Seite 5</title>
   <style>
-    .frageblock { margin-bottom: 30px; }
-    .likert-container {
-      display: flex;
-      justify-content: space-evenly;
-      margin-top: 10px;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+      max-width: 900px;
     }
-    .likert-container label {
+    h1 {
+      text-align: center;
+    }
+    .frageblock { 
+      margin-bottom: 40px; 
+    }
+    .likert-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+    .likert-scale {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+      text-align: center;
+    }
+    .likert-scale .scale-label {
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }
+    .likert-scale label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       font-size: 1em;
-      margin: 0 5px;
       cursor: pointer;
     }
+    .likert-scale input {
+      margin-top: 6px;
+    }
     button {
-      margin-top: 20px;
-      padding: 10px 20px;
+      display: block;
+      margin: 30px auto;
+      padding: 12px 25px;
       font-size: 1.1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #007acc;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005f99;
+    }
+
+    /* Responsives Verhalten */
+    @media (max-width: 600px) {
+      .likert-scale {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      .likert-scale label {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+      .likert-scale input {
+        margin: 0;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Letzter Teil der Umfrage</h1>
 
-  <h3>___________________ 1 = Stimme gar nicht zu ________________ 2 = Stimme eher nicht zu __________________ 3 = Neutral _____________________ 4 = Stimme eher zu ________________ 5 = Stimme völlig zu</h3>
-
   <!-- Frage 13 -->
   <div class="frageblock">
     <p>Kritik an sexistischen Äußerungen ist grundsätzlich berechtigt.</p>
-    <div class="likert-container">
-      <label><input type="radio" name="frage13" value="1">1</label>
-      <label><input type="radio" name="frage13" value="2">2</label>
-      <label><input type="radio" name="frage13" value="3">3</label>
-      <label><input type="radio" name="frage13" value="4">4</label>
-      <label><input type="radio" name="frage13" value="5">5</label>
+    <div class="likert-wrapper">
+      <div class="likert-scale" data-name="frage13"></div>
     </div>
   </div>
 
   <!-- Frage 14 -->
   <div class="frageblock">
     <p>In Diskussionen über Sexismus ist es wichtig, Frauen erst einmal zuzuhören statt sich zu rechtfertigen.</p>
-    <div class="likert-container">
-      <label><input type="radio" name="frage14" value="1">1</label>
-      <label><input type="radio" name="frage14" value="2">2</label>
-      <label><input type="radio" name="frage14" value="3">3</label>
-      <label><input type="radio" name="frage14" value="4">4</label>
-      <label><input type="radio" name="frage14" value="5">5</label>
+    <div class="likert-wrapper">
+      <div class="likert-scale" data-name="frage14"></div>
     </div>
   </div>
 
   <!-- Frage 15 -->
   <div class="frageblock">
     <p>Die Gleichberechtigungsdebatte ist oft überzogen und benachteiligt Männer.</p>
-    <div class="likert-container">
-      <label><input type="radio" name="frage15" value="1">1</label>
-      <label><input type="radio" name="frage15" value="2">2</label>
-      <label><input type="radio" name="frage15" value="3">3</label>
-      <label><input type="radio" name="frage15" value="4">4</label>
-      <label><input type="radio" name="frage15" value="5">5</label>
+    <div class="likert-wrapper">
+      <div class="likert-scale" data-name="frage15"></div>
     </div>
   </div>
 
   <button onclick="zurAuswertung()">Auswertung anzeigen</button>
 
 <script>
+  // Skalenbeschreibungen dynamisch einfügen
+  const beschreibungen = [
+    "Stimme gar nicht zu",
+    "Stimme eher nicht zu",
+    "Neutral",
+    "Stimme eher zu",
+    "Stimme völlig zu"
+  ];
+
+  document.querySelectorAll(".likert-scale").forEach(scale => {
+    const name = scale.dataset.name;
+    beschreibungen.forEach((text, index) => {
+      const value = index + 1;
+      const label = document.createElement("label");
+
+      const span = document.createElement("span");
+      span.classList.add("scale-label");
+      span.innerText = text;
+
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = name;
+      input.value = value;
+
+      label.appendChild(span);
+      label.appendChild(input);
+      scale.appendChild(label);
+    });
+  });
+
+  // Speicherung + Weiterleitung
   function zurAuswertung() {
-    const fragen = document.querySelectorAll('.frageblock');
+    const fragen = document.querySelectorAll('.likert-scale');
     let antwortenSeite5 = {};
 
     for (let i = 0; i < fragen.length; i++) {
-      const frageNummer = i + 13;
-      const name = `frage${frageNummer}`;
+      const name = fragen[i].dataset.name;
       const checked = fragen[i].querySelector(`input[name="${name}"]:checked`);
       if (!checked) {
-        alert(`Bitte beantworte Frage ${frageNummer}.`);
+        alert(`Bitte beantworte ${name}.`);
         return;
       }
       antwortenSeite5[name] = parseInt(checked.value);
     }
 
     localStorage.setItem("antwortenSeite5", JSON.stringify(antwortenSeite5));
-
-    // Wechsle zur Auswertungsseite
     window.location.href = "auswertung.html";
   }
 </script>
 
-  
 </body>
 </html>
