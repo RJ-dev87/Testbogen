@@ -4,86 +4,153 @@
   <meta charset="UTF-8" />
   <title>Fragen Seite 2</title>
   <style>
-    .frageblock { margin-bottom: 30px; }
-    .likert-container {
-      display: flex;
-      justify-content: space-evenly;
-      margin-top: 10px;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+      max-width: 900px;
     }
-    .likert-container label {
+    h1 {
+      text-align: center;
+    }
+    .frageblock { 
+      margin-bottom: 40px; 
+    }
+    .likert-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+    .likert-scale {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+      text-align: center;
+    }
+    .likert-scale .scale-label {
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }
+    .likert-scale label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       font-size: 1em;
-      margin: 0 5px;
       cursor: pointer;
     }
+    .likert-scale input {
+      margin-top: 6px;
+    }
     button {
-      margin-top: 20px;
-      padding: 10px 20px;
+      display: block;
+      margin: 30px auto;
+      padding: 12px 25px;
       font-size: 1.1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #007acc;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005f99;
+    }
+
+    /* Responsives Verhalten */
+    @media (max-width: 600px) {
+      .likert-scale {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      .likert-scale label {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+      .likert-scale input {
+        margin: 0;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Teil 2 von 5</h1>
 
-  <h3>___________________ 1 = Stimme gar nicht zu ________________ 2 = Stimme eher nicht zu __________________ 3 = Neutral _____________________ 4 = Stimme eher zu ________________ 5 = Stimme völlig zu</h3>
-
   <!-- Frage 4 -->
   <div class="frageblock">
     <p>Begriffe wie „Tussi“ oder „Zicke“ sind problematisch – auch wenn sie nur im Spaß verwendet werden.</p>
-    <div class="likert-container">
-      <label><input type="radio" name="frage4" value="1">1</label>
-      <label><input type="radio" name="frage4" value="2">2</label>
-      <label><input type="radio" name="frage4" value="3">3</label>
-      <label><input type="radio" name="frage4" value="4">4</label>
-      <label><input type="radio" name="frage4" value="5">5</label>
+    <div class="likert-wrapper">
+      <div class="likert-scale" data-name="frage4"></div>
     </div>
   </div>
 
   <!-- Frage 5 -->
   <div class="frageblock">
     <p>Sexistische Witze sind meist harmlos und sollten nicht überbewertet werden.</p>
-    <div class="likert-container">
-      <label><input type="radio" name="frage5" value="1">1</label>
-      <label><input type="radio" name="frage5" value="2">2</label>
-      <label><input type="radio" name="frage5" value="3">3</label>
-      <label><input type="radio" name="frage5" value="4">4</label>
-      <label><input type="radio" name="frage5" value="5">5</label>
+    <div class="likert-wrapper">
+      <div class="likert-scale" data-name="frage5"></div>
     </div>
   </div>
 
   <!-- Frage 6 -->
   <div class="frageblock">
     <p>Es ist akzeptabel, „Mädchen“ oder „weibisch“ auch mal als scherzhafte Beleidigung zu benutzen.</p>
-    <div class="likert-container">
-      <label><input type="radio" name="frage6" value="1">1</label>
-      <label><input type="radio" name="frage6" value="2">2</label>
-      <label><input type="radio" name="frage6" value="3">3</label>
-      <label><input type="radio" name="frage6" value="4">4</label>
-      <label><input type="radio" name="frage6" value="5">5</label>
+    <div class="likert-wrapper">
+      <div class="likert-scale" data-name="frage6"></div>
     </div>
   </div>
 
   <button onclick="weiterZurDrittenSeite()">Weiter</button>
 
   <script>
+    // Skalenbeschreibungen dynamisch einfügen
+    const beschreibungen = [
+      "Stimme gar nicht zu",
+      "Stimme eher nicht zu",
+      "Neutral",
+      "Stimme eher zu",
+      "Stimme völlig zu"
+    ];
+
+    document.querySelectorAll(".likert-scale").forEach(scale => {
+      const name = scale.dataset.name;
+      beschreibungen.forEach((text, index) => {
+        const value = index + 1;
+        const label = document.createElement("label");
+
+        const span = document.createElement("span");
+        span.classList.add("scale-label");
+        span.innerText = text;
+
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = name;
+        input.value = value;
+
+        label.appendChild(span);
+        label.appendChild(input);
+        scale.appendChild(label);
+      });
+    });
+
+    // Navigation + Speicherung
     function weiterZurDrittenSeite() {
-      const fragen = document.querySelectorAll('.frageblock');
+      const fragen = document.querySelectorAll('.likert-scale');
       let antworten = {};
 
       for (let i = 0; i < fragen.length; i++) {
-        const name = `frage${i + 4}`; // Weil die Fragen hier ab 4 beginnen
+        const name = fragen[i].dataset.name;
         const checked = fragen[i].querySelector(`input[name="${name}"]:checked`);
         if (!checked) {
-          alert(`Bitte beantworte Frage ${i + 4}.`);
+          alert(`Bitte beantworte ${name}.`);
           return;
         }
         antworten[name] = checked.value;
       }
 
-      // Speichern der Antworten im localStorage
       localStorage.setItem("antwortenSeite2", JSON.stringify(antworten));
-
-      // Zur dritten Seite wechseln
       window.location.href = "seite3.html";
     }
   </script>
